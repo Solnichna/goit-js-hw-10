@@ -1,0 +1,2 @@
+import"./assets/modulepreload-polyfill-ec808ebb.js";function m(e,s){return new Promise((i,t)=>{setTimeout(()=>{s==="fulfilled"?i(e):t(e)},e)})}document.getElementById("promiseForm").addEventListener("submit",function(e){e.preventDefault();const s=parseInt(this.elements.delay.value),i=this.elements.state.value;m(s,i).then(t=>{iziToast.success({title:"Fulfilled promise",message:`✅ Fulfilled promise in ${t}ms`})}).catch(t=>{iziToast.error({title:"Rejected promise",message:`❌ Rejected promise in ${t}ms`})})});
+//# sourceMappingURL=commonHelpers2.js.map
