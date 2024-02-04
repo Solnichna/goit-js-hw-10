@@ -1,18 +1,20 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-document.getElementById('notification-form').addEventListener('submit', function (event) {
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector('.form');
+  form.addEventListener('submit', handleFormSubmit);
+});
+
+function handleFormSubmit(event) {
   event.preventDefault();
 
-  const delayInput = document.querySelector('input[name="delay"]');
-  const stateRadio = document.querySelector('input[name="state"]:checked');
+  const delay = parseInt(document.querySelector('input[name="delay"]').value);
+  const state = document.querySelector('input[name="state"]:checked').value;
 
-  const delay = parseInt(delayInput.value);
-
-  const notificationPromise = new Promise((resolve, reject) => {
-
+  const promise = new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (stateRadio.value === 'fulfilled') {
+      if (state === 'fulfilled') {
         resolve(delay);
       } else {
         reject(delay);
@@ -20,15 +22,20 @@ document.getElementById('notification-form').addEventListener('submit', function
     }, delay);
   });
 
-  notificationPromise.then((result) => {
-    iziToast.success({
-      title: 'Fulfilled promise',
-      message: `✅ Fulfilled promise in ${result}ms`,
+  promise
+    .then((delay) => {
+      showNotification(`✅ Fulfilled promise in ${delay}ms`, 'success');
+    })
+    .catch((delay) => {
+      showNotification(`❌ Rejected promise in ${delay}ms`, 'error');
     });
-  }).catch((result) => {
-    iziToast.error({
-      title: 'Rejected promise',
-      message: `❌ Rejected promise in ${result}ms`,
-    });
-  });
+}
+
+function showNotification(message, type) {
+  iziToast[type]({
+    title: 'Notification',
+    message: message,
+    position: 'topRight',
+    timeout: 5000, 
 });
+}
